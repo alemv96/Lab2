@@ -29,12 +29,10 @@ void printOutput(double miles, double minutes, double trafficIncrease);
 int getUserData(double& miles, double& avgSpeed, int& hours){
   int exit;
     std::cout << "Please enter zero (0) if you want to exit this program" << '\n';
-    std::cout << "If you want to keep this program press one (1)" << '\n';
+    std::cout << "If you want to start this program press one (1)" << '\n';
     std::cin >> exit;
 
       if (exit != END){
-      //  bool flag = false;
-        //do {
           std::cout << "Enter miles on your route (0 to end): " << '\n';
           std::cin >> miles;
           std::cout << "Enter your average speed in miles per hour: " << '\n';
@@ -42,14 +40,12 @@ int getUserData(double& miles, double& avgSpeed, int& hours){
           std::cout << "Enter the time of the day (24- hour clock): " << '\n';
           std::cin >> hours;
 
-            if ((miles <= 0) || (avgSpeed <= 0) || (hours <= 0)){
+            if ((miles <= 0) || (avgSpeed <= 0) || (hours <= 0) || (hours >= 24)){
               std::cout << "You entered an invalid value" << '\n';
-              std::cout << "Please make sure you are entering positive numeric values..." << '\n';
+              std::cout << "Please make sure you are entering positive numeric values or the time is not greater than 24..." << '\n';
               return INVALID_DATA;
-            }
-            else
+            }else
               return VALID_DATA;
-        //}while (flag);
       }else
         return exit;
 }
@@ -57,19 +53,18 @@ int getUserData(double& miles, double& avgSpeed, int& hours){
 double calcTrafficIncrese(int hour){
   int random_chance;
      random_chance = rand() % 50 + 1; //random number between 1 and 100;
-    // std::cout << random_chance << '\n'; flag
-    // system("PAUSE"); flag
+
         if ((hour == 7) || (hour == 8) || (hour == 17) || (hour == 18)){
-          if (random_chance <= 5) return 1.0;
-          else if ((random_chance > 5) && (random_chance <= 10)) return 1.25;
-          else if ((random_chance > 10) && (random_chance <= 35)) return 1.5;
-          else return 2.0;
+          if (random_chance <= 5) return NO_TRAFFIC;
+          else if ((random_chance > 5) && (random_chance <= 10)) return SMALL_TRAFFIC;
+          else if ((random_chance > 10) && (random_chance <= 35)) return MEDIUM_TRAFFIC;
+          else return LARGE_TRAFFIC;
         }
         else{
-          if (random_chance <= 5) return 2.0;
-          else if (random_chance <= 15) return 1.5;
-          else if (random_chance <= 30) return 1.25;
-          else return 1.0;
+          if (random_chance <= 5) LARGE_TRAFFIC;
+          else if (random_chance <= 15) return MEDIUM_TRAFFIC;
+          else if (random_chance <= 30) return SMALL_TRAFFIC;
+          else return NO_TRAFFIC;
         }
 }
 
@@ -106,9 +101,7 @@ int main(){
         while (rv != END){
           if (rv != INVALID_DATA){
             trafficIncrease = calcTrafficIncrese(hour);
-            //std::cout << trafficIncrease << '\n'; flag
             timeToSchool = miles/ avgSpeed * 60 * trafficIncrease;
-            //std::cout << timeToSchool << '\n'; flag
             printOutput(miles, timeToSchool, trafficIncrease);
           }// end if valid data.
           rv = getUserData(miles, avgSpeed, hour);
