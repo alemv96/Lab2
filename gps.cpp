@@ -10,8 +10,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdio.h>
-//side notes: fix the time and also the exit value you are getting in calcTrafficIncrese fucntion
-//
 
 const int END = 0;
 const int INVALID_DATA = -1;
@@ -26,6 +24,7 @@ int getUserData(double& miles, double& avgSpeed, int& hours);
 double calcTrafficIncrese(int hour);
 void printOutput(double miles, double minutes, double trafficIncrease);
 
+//this function only gets the user's data
 int getUserData(double& miles, double& avgSpeed, int& hours){
   int exit;
     std::cout << "Please enter zero (0) if you want to exit this program" << '\n';
@@ -33,23 +32,24 @@ int getUserData(double& miles, double& avgSpeed, int& hours){
     std::cin >> exit;
 
       if (exit != END){
-          std::cout << "Enter miles on your route (0 to end): " << '\n';
-          std::cin >> miles;
-          std::cout << "Enter your average speed in miles per hour: " << '\n';
-          std::cin >> avgSpeed;
-          std::cout << "Enter the time of the day (24- hour clock): " << '\n';
-          std::cin >> hours;
+        std::cout << "Enter miles on your route (0 to end): " << '\n';
+        std::cin >> miles;
+        std::cout << "Enter your average speed in miles per hour: " << '\n';
+        std::cin >> avgSpeed;
+        std::cout << "Enter the time of the day (24- hour clock): " << '\n';
+        std::cin >> hours;
 
-            if ((miles <= 0) || (avgSpeed <= 0) || (hours <= 0) || (hours >= 24)){
-              std::cout << "You entered an invalid value" << '\n';
-              std::cout << "Please make sure you are entering positive numeric values or the time is not greater than 24..." << '\n';
-              return INVALID_DATA;
-            }else
-              return VALID_DATA;
+          if ((miles <= 0) || (avgSpeed <= 0) || (hours <= 0) || (hours >= 24)){
+            std::cout << "You entered an invalid value" << '\n';
+            std::cout << "Please make sure you are entering positive numeric values or the time is not greater than 24..." << '\n';
+            return INVALID_DATA;
+          }else
+            return VALID_DATA;
       }else
         return exit;
 }
 
+//this function calculates the random traffic increase.
 double calcTrafficIncrese(int hour){
   int random_chance;
      random_chance = rand() % 50 + 1; //random number between 1 and 100;
@@ -68,7 +68,9 @@ double calcTrafficIncrese(int hour){
         }
 }
 
+// function that prints user's input and calculations.
 void printOutput(double miles, double minutes, double trafficIncrease){
+
     if (trafficIncrease == NO_TRAFFIC)
       std::cout << "There is no traffic at this time. You are in the fastest route"<< '\n';
     else if (trafficIncrease == SMALL_TRAFFIC)
